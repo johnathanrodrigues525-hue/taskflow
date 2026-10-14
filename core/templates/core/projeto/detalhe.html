@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+{% block conteudo %}
+<h2>{{ projeto.nome }}</h2>
+<p><b>Responsável:</b> {{ projeto.responsavel }}</p>
+<p><b>Período:</b> {{ projeto.data_inicio|date:"d/m/Y" }}
+   {% if projeto.data_fim %}→ {{ projeto.data_fim|date:"d/m/Y" }}{% endif %}</p>
+<p><b>Status:</b> <span class="badge b-{{ projeto.status }}">{{ projeto.get_status_display }}</span></p>
+<p><b>Descrição:</b> {{ projeto.descricao|default:"—" }}</p>
+
+<h3>Tarefas do Projeto</h3>
+<a class="btn" href="{% url 'criar_tarefa' %}">+ Nova Tarefa</a>
+<table>
+    <tr><th>Título</th><th>Prioridade</th><th>Status</th><th>Prazo</th><th>Ações</th></tr>
+    {% for t in tarefas %}
+    <tr>
+        <td>{{ t.titulo }}</td>
+        <td>{{ t.get_prioridade_display }}</td>
+        <td><span class="badge b-{{ t.status }}">{{ t.get_status_display }}</span></td>
+        <td>{{ t.prazo|date:"d/m/Y"|default:"—" }}</td>
+        <td>
+            <a class="btn" href="{% url 'editar_tarefa' t.id %}">Editar</a>
+            <a class="btn btn-danger" href="{% url 'excluir_tarefa' t.id %}">Excluir</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">Sem tarefas cadastradas.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

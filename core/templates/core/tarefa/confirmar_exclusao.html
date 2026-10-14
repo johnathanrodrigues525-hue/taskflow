@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+{% block conteudo %}
+<h2>Excluir Tarefa</h2>
+<p>Confirma excluir <strong>{{ tarefa.titulo }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Sim, excluir</button>
+    <a class="btn btn-secondary" href="{% url 'lista_tarefas' %}">Cancelar</a>
+</form>
+{% endblock %}

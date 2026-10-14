@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% block conteudo %}
+<h2>{% if tarefa %}Editar{% else %}Nova{% endif %} Tarefa</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Título *</label>
+    <input name="titulo" required value="{{ tarefa.titulo|default:'' }}">
+
+    <label>Descrição</label>
+    <textarea name="descricao">{{ tarefa.descricao|default:'' }}</textarea>
+
+    <label>Projeto * (ForeignKey)</label>
+    <select name="projeto" required>
+        <option value="">— Selecione —</option>
+        {% for p in projetos %}
+            <option value="{{ p.id }}"
+                {% if tarefa and tarefa.projeto.id == p.id %}selected{% endif %}>
+                {{ p.nome }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>Prioridade</label>
+    <select name="prioridade">
+        <option value="baixa" {% if tarefa.prioridade == 'baixa' %}selected{% endif %}>Baixa</option>
+        <option value="media" {% if tarefa.prioridade == 'media' or not tarefa %}selected{% endif %}>Média</option>
+        <option value="alta" {% if tarefa.prioridade == 'alta' %}selected{% endif %}>Alta</option>
+    </select>
+
+    <label>Status</label>
+    <select name="status">
+        <option value="pendente" {% if tarefa.status == 'pendente' or not tarefa %}selected{% endif %}>Pendente</option>
+        <option value="executando" {% if tarefa.status == 'executando' %}selected{% endif %}>Em Execução</option>
+        <option value="concluida" {% if tarefa.status == 'concluida' %}selected{% endif %}>Concluída</option>
+    </select>
+
+    <label>Prazo</label>
+    <input type="date" name="prazo" value="{{ tarefa.prazo|date:'Y-m-d' }}">
+
+    <br><br>
+    <button class="btn" type="submit">Salvar</button>
+    <a class="btn btn-secondary" href="{% url 'lista_tarefas' %}">Cancelar</a>
+</form>
+{% endblock %}

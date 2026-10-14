@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+{% block conteudo %}
+<h2>Excluir Projeto</h2>
+<p>Confirma excluir <strong>{{ projeto.nome }}</strong>?</p>
+<p>⚠️ {{ projeto.total_tarefas }} tarefa(s) vinculada(s) também será(ão) removida(s).</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Sim, excluir</button>
+    <a class="btn btn-secondary" href="{% url 'lista_projetos' %}">Cancelar</a>
+</form>
+{% endblock %}

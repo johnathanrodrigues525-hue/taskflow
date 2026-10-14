@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+{% block conteudo %}
+<h2>Painel Geral</h2>
+<div class="cards">
+    <div class="card"><h3>Projetos</h3><p>{{ total_projetos }}</p></div>
+    <div class="card"><h3>Tarefas</h3><p>{{ total_tarefas }}</p></div>
+    <div class="card"><h3>Pendentes</h3><p>{{ pendentes }}</p></div>
+</div>
+{% endblock %}

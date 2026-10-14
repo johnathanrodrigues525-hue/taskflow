@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% block conteudo %}
+<h2>Tarefas</h2>
+<a class="btn" href="{% url 'criar_tarefa' %}">+ Nova Tarefa</a>
+
+<form method="get" style="margin-top:15px;">
+    <label>Filtrar por projeto:</label>
+    <select name="projeto" onchange="this.form.submit()">
+        <option value="">— Todos —</option>
+        {% for p in projetos %}
+            <option value="{{ p.id }}"
+                {% if projeto_filtro == p.id|stringformat:"s" %}selected{% endif %}>
+                {{ p.nome }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+<table>
+    <tr><th>Título</th><th>Projeto</th><th>Prioridade</th>
+        <th>Status</th><th>Prazo</th><th>Ações</th></tr>
+    {% for t in tarefas %}
+    <tr>
+        <td>{{ t.titulo }}</td>
+        <td>{{ t.projeto.nome }}</td>
+        <td>{{ t.get_prioridade_display }}</td>
+        <td><span class="badge b-{{ t.status }}">{{ t.get_status_display }}</span></td>
+        <td>{{ t.prazo|date:"d/m/Y"|default:"—" }}</td>
+        <td>
+            <a class="btn" href="{% url 'editar_tarefa' t.id %}">Editar</a>
+            <a class="btn btn-danger" href="{% url 'excluir_tarefa' t.id %}">Excluir</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">Nenhuma tarefa cadastrada.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
